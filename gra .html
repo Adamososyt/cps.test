@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cps test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+            background-color:#696969;
+        }
+
+        #timer {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        #startButton {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            color:black;
+            background-color:green;
+        }
+
+        .gameButton {
+            margin: 10px;
+            padding: 20px;
+            cursor: pointer;
+        }
+
+        #result {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>cps test</h1>
+
+    <div id="timer">time: <span id="time">0</span> sek.</div>
+
+    <button id="startButton" onclick="startGame()">Start</button>
+
+    <div id="buttonContainer">
+        <div class="gameButton" onclick="increaseScore()"></div>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+        let timer = 0;
+        let clicks = 0;
+        let cps = 0;
+        let gameStarted = false;
+
+        function startGame() {
+            if (!gameStarted) {
+                gameStarted = true;
+                timer = 10;
+                clicks = 0;
+                cps = 0;
+                updateTimer();
+                updateButtonColor();
+                setInterval(updateTimer, 1000);
+            }
+        }
+
+        function updateTimer() {
+            if (timer > 0) {
+                timer--;
+                document.getElementById('time').innerText = timer;
+            } else {
+                endGame();
+            }
+        }
+
+        function updateButtonColor() {
+            const button = document.querySelector('.gameButton');
+            const randomColor = getRandomColor();
+            button.style.backgroundColor = randomColor;
+        }
+
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        function increaseScore() {
+            if (gameStarted) {
+                clicks++;
+                updateButtonColor();
+            }
+        }
+
+        function endGame() {
+            gameStarted = false;
+            cps = clicks / 10; // Oblicz kliknięcia na sekundę (clicks per second)
+            document.getElementById('result').innerText = `result : ${cps.toFixed(2)} CPS`;
+        }
+    </script>
+<h4>created by Adamosos</h4>
+
+</body>
+</html>
